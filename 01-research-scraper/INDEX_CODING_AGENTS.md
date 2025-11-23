@@ -4,74 +4,25 @@ Quick index of all one-shot coding agent runs for this use case.
 
 ---
 
-## [Agent Name] - [Model] - [Date]
-
-![Main Screenshot](coding_agents/[folder-name]/.report/screenshot.png)
-
-**Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
-**Time:** `[e.g., 6 hours]`  
-**Score:** `[X/30]` ([detailed report](coding_agents/[folder-name]/.report/EVALUATION.md))
-
-**Quick Summary:**
-```
-[2-3 sentences: What worked? What didn't? Would you recommend?]
-```
-
-**Core Features:**
-- [ ] All four views working (List, Detail, Theory, Dashboard)
-- [ ] Continuous import system functional
-- [ ] Fallback mechanisms implemented
-- [ ] Playwright MCP testing completed
-
-**Rating:** ⭐⭐⭐⭐⭐ `X/5` - `[Recommendation]`
-
----
-
-
-## Codexcli - Codex-Max-Xhigh - Nov 23, 2025
-
-![Main Screenshot](coding_agents/codexcli_codex-max-xhigh/.report/screenshot.png)
-
-**Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
-**Time:** `[X hours]`  
-**Score:** `[X/30]` ([detailed report](coding_agents/codexcli_codex-max-xhigh/.report/EVALUATION.md))
-
-**Quick Summary:**
-```
-[Fill in after run - 2-3 sentences about what worked/didn't work]
-```
-
-**Core Features:**
-- [ ] [Feature 1]
-- [ ] [Feature 2]
-- [ ] [Feature 3]
-- [ ] [Feature 4]
-
-**Rating:** ⭐⭐⭐⭐⭐ `X/5` - `[Recommendation]`
-
----
-
-
 ## Copilot - Sonnet-45 - Nov 23, 2025
 
 ![Main Screenshot](coding_agents/copilot_sonnet-45/.report/screenshot.png)
 
-**Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
-**Time:** `[X hours]`  
+**Status:** ✅ Success
+**Time:** `8 minutes`  
 **Score:** `[X/30]` ([detailed report](coding_agents/copilot_sonnet-45/.report/EVALUATION.md))
 
 **Quick Summary:**
 ```
-[Fill in after run - 2-3 sentences about what worked/didn't work]
+One shot probably can't get better than this.
+No human interaction for a working MVP needed.
+
+Negatives:
+- Implemented GraphRAG but didn't expose cluster visualization etc in the UI
+- Ingestion tasks are missing required settings
 ```
 
-**Core Features:**
-- [ ] [Feature 1]
-- [ ] [Feature 2]
-- [ ] [Feature 3]
-- [ ] [Feature 4]
-
-**Rating:** ⭐⭐⭐⭐⭐ `X/5` - `[Recommendation]`
+**Rating:** ⭐⭐⭐⭐ `4/5` - `GitHub Copilot is actually an amazing harness`
 
 ---
 
