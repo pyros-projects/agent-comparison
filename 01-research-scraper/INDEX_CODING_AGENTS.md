@@ -51,6 +51,30 @@ Quick index of all one-shot coding agent runs for this use case.
 
 ---
 
+
+## Copilot - Sonnet-45 - Nov 23, 2025
+
+![Main Screenshot](coding_agents/copilot_sonnet-45/.report/screenshot.png)
+
+**Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
+**Time:** `[X hours]`  
+**Score:** `[X/30]` ([detailed report](coding_agents/copilot_sonnet-45/.report/EVALUATION.md))
+
+**Quick Summary:**
+```
+[Fill in after run - 2-3 sentences about what worked/didn't work]
+```
+
+**Core Features:**
+- [ ] [Feature 1]
+- [ ] [Feature 2]
+- [ ] [Feature 3]
+- [ ] [Feature 4]
+
+**Rating:** ⭐⭐⭐⭐⭐ `X/5` - `[Recommendation]`
+
+---
+
 ## Summary Statistics
 
 | Agent | Model | Time | Score | Status | Rating |
