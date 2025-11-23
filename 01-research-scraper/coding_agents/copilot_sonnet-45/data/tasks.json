@@ -1,0 +1,22 @@
+{
+  "tasks": {
+    "1": {
+      "id": "d9da4f3d-963b-4fae-a78a-7f1a491db89c",
+      "name": "Computer Vision Papers",
+      "filters": {
+        "arxiv_categories": [
+          "cs.CV"
+        ],
+        "semantic_query": null,
+        "text_query": null,
+        "min_relevance_score": null
+      },
+      "check_interval_seconds": 300,
+      "max_results_per_check": 10,
+      "is_active": true,
+      "created_at": "2025-11-23T20:13:47.483623",
+      "last_check": "2025-11-23T20:38:14.100194",
+      "papers_imported": 2
+    }
+  }
+}
