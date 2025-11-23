@@ -6,11 +6,11 @@ Quick index of all one-shot coding agent runs for this use case.
 
 ## [Agent Name] - [Model] - [Date]
 
-![Main Screenshot](coding_agents/[folder-name]/screenshot.png)
+![Main Screenshot](coding_agents/[folder-name]/.report/screenshot.png)
 
 **Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
 **Time:** `[e.g., 6 hours]`  
-**Score:** `[X/30]` ([detailed report](coding_agents/[folder-name]/EVALUATION.md))
+**Score:** `[X/30]` ([detailed report](coding_agents/[folder-name]/.report/EVALUATION.md))
 
 **Quick Summary:**
 ```
