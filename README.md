@@ -249,11 +249,17 @@ This nested structure lets you compare:
 
 ### Evaluation Criteria
 
-After completing a run, use the structured evaluation templates to maintain consistent assessment:
+After completing a run, maintain consistent documentation using the provided templates:
 
-**Copy the appropriate template into your run folder:**
-- For one-shot coding agents: `EVALUATION_REPORT_CODING_AGENT.md`
-- For orchestration paradigms: `EVALUATION_REPORT_ORCHESTRATION.md`
+#### 1. Detailed Evaluation Report (in run folder)
+
+Copy the appropriate evaluation template into your run folder:
+- **Coding agents**: Copy `EVALUATION_REPORT_CODING_AGENT.md` → `[run-folder]/EVALUATION.md`
+- **Orchestration**: Copy `EVALUATION_REPORT_ORCHESTRATION.md` → `[run-folder]/EVALUATION.md`
+
+For use-case-specific evaluation templates (like `01-research-scraper`), use the templates inside the use case folder:
+- `01-research-scraper/EVALUATION_CODING_AGENT.md` (has all 40+ requirements pre-filled)
+- `01-research-scraper/EVALUATION_ORCHESTRATION.md`
 
 These templates provide structured rubrics covering:
 - **Autonomy** - How much human intervention was required?
@@ -263,35 +269,107 @@ These templates provide structured rubrics covering:
 - **UX/Polish** - Is the user experience smooth and well-thought-out?
 - **Understanding** - Did the agent grasp the task's nuances?
 
-The templates include checklists, scoring rubrics, and structured sections to capture both quantitative and qualitative observations, making it easier to compare runs across different agents and paradigms.
+#### 2. Quick Index Entry (in use case root)
+
+Add a quick entry to the use case index for at-a-glance comparison:
+- **Coding agents**: Update `[use-case]/INDEX_CODING_AGENTS.md`
+- **Orchestration**: Update `[use-case]/INDEX_ORCHESTRATION.md`
+
+**Minimal effort required:**
+1. Add screenshot
+2. Fill in 5 fields: Status (✅/⚠️/❌), Time, Score, Quick summary (2-3 sentences), Rating
+3. Check 4 boxes for core features
+4. Update summary table
+
+Example:
+```markdown
+## Cursor - Composer-1 - Nov 23, 2025
+
+![](coding_agents/cursor_composer-1/screenshot.png)
+
+**Status:** ⚠️ Partial  
+**Time:** <30 minutes  
+**Score:** 18/30 ([detailed report](coding_agents/cursor_composer-1/EVALUATION.md))
+
+**Quick Summary:**
+```
+Fast initial implementation but needs handholding for final 20%.
+Amazing speed but gets lost without precise guidance.
+```
+
+**Core Features:**
+- [x] Feature 1 working
+- [ ] Feature 2 missing
+- [ ] Feature 3 partial
+- [ ] Feature 4 not tested
+
+**Rating:** ⭐⭐⭐ 3/5 - Recommended for speed-critical prototypes
+```
+
+This two-tier system provides:
+- **Index files** for quick scanning and comparison across runs
+- **Detailed evaluations** for deep analysis when needed
+
+#### Templates Available
+
+**Root Templates (use-case agnostic):**
+- `INDEX_CODING_AGENTS_TEMPLATE.md` - Quick index template for coding agent runs
+- `INDEX_ORCHESTRATION_TEMPLATE.md` - Quick index template for orchestration runs  
+- `EVALUATION_REPORT_CODING_AGENT.md` - Detailed evaluation for coding agents
+- `EVALUATION_REPORT_ORCHESTRATION.md` - Detailed evaluation for orchestration
+
+**Use-Case Templates (pre-filled with specific requirements):**
+- `[use-case]/INDEX_CODING_AGENTS.md` - Active index (copy from root template, customize)
+- `[use-case]/INDEX_ORCHESTRATION.md` - Active index (copy from root template, customize)
+- `[use-case]/EVALUATION_CODING_AGENT.md` - Pre-filled with use-case requirements
+- `[use-case]/EVALUATION_ORCHESTRATION.md` - Pre-filled with use-case requirements
 
 ### Session Data & Documentation
 
-If possible and if you're comfortable doing so, include a `.data/` folder in your final run directory containing:
+**Each run folder should contain:**
+
+1. **EVALUATION.md** - Detailed evaluation report (copied from template, filled out)
+2. **screenshot.png** (or similar) - Main application screenshot for the index
+3. **Optional: .report/** folder - Session logs, transcripts, screenshots (if comfortable sharing)
+
+Example run structure:
+```
+coding_agents/cursor_composer-1/
+├── EVALUATION.md          # Detailed evaluation (required)
+├── screenshot.png         # Main screenshot for index (required)
+├── .report/               # Optional evaluation assets
+│   ├── chat-log.md
+│   ├── transcript.json
+│   └── screenshots/
+├── src/                   # The actual implementation
+└── ...
+```
+
+If possible and if you're comfortable doing so, include a `.report/` folder containing:
 - Chat logs or conversation history with the agent
 - Session transcripts showing the agent's reasoning process
 - Any other interaction data that might be useful for analysis
 
 **This is purely optional** due to potential privacy concerns and sensitive information that could be contained in such data (API keys, personal information, proprietary code snippets, etc.). Only include this if you've reviewed the data and are comfortable sharing it.
 
-**If `.data/` session logs are not provided**, include screenshots documenting critical points:
+**If `.report/` session logs are not provided**, include screenshots documenting critical points:
 - **Final application** - Screenshots showing the completed app running (UI views, CLI output, key features)
 - **Notable struggles** - Screenshots of errors, failed attempts, or areas where the agent struggled
 - **Interesting decisions** - Moments where the agent made notable architectural or design choices
 - **Manual interventions** - Context where you had to guide or correct the agent
 
-Place screenshots in an `assets/` or `screenshots/` folder within your run directory.
+Place screenshots in the `.report/` folder within your run directory.
 
 Example structure:
 ```
 coding_agents/cursor_claude-sonnet/
-├── .data/              # Optional session data
+├── .report/            # Optional session data
 │   ├── chat-log.md
-│   └── transcript.json
-├── screenshots/        # If no .data provided
-│   ├── 01-finished-app.png
-│   ├── 02-error-handling-struggle.png
-│   └── 03-final-ui.png
+│   ├── transcript.json
+│   └── screenshots/
+│       ├── 01-finished-app.png
+│       ├── 02-error-handling-struggle.png
+│       └── 03-final-ui.png
 ├── src/
 └── ...
 ```
@@ -299,6 +377,27 @@ coding_agents/cursor_claude-sonnet/
 - **Your Workflow Match** - Does this agent's approach align with how you'd want to work?
 
 Each developer will weight these differently based on their needs, which is exactly the point.
+
+## Documentation Quick Reference
+
+**After completing a run:**
+
+1. **Fill out detailed evaluation** (in run folder):
+   - Copy template: `EVALUATION_REPORT_CODING_AGENT.md` or use case-specific version
+   - Save as: `[run-folder]/EVALUATION.md`
+
+2. **Add quick index entry** (in use case root):
+   - Edit: `[use-case]/INDEX_CODING_AGENTS.md`
+   - Add: Screenshot, status, time, score, 2-3 sentence summary, 4 feature checkboxes, rating
+
+3. **Include required files** (in run folder):
+   - `EVALUATION.md` (detailed evaluation)
+   - `screenshot.png` (main screenshot)
+   - Optional: `.report/` (session logs, screenshots, transcripts)
+
+**Templates available:**
+- Root templates (generic): `INDEX_*_TEMPLATE.md`, `EVALUATION_REPORT_*.md`
+- Use case templates (pre-filled): `[use-case]/EVALUATION_*.md`, `[use-case]/INDEX_*.md`
 
 ## Why Qualitative Evaluation?
 

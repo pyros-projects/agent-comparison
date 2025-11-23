@@ -250,6 +250,170 @@ def copy_base_to_target(base_path, target_path):
         return None
 
 
+def setup_evaluation_template(target_path, use_case_path, is_orchestration):
+    """Copy evaluation template and create .report/ folder."""
+    repo_root = get_repo_root()
+    
+    # Determine which evaluation template to use
+    # First try use-case specific template, fall back to generic
+    if is_orchestration:
+        use_case_template = use_case_path / 'EVALUATION_ORCHESTRATION.md'
+        generic_template = repo_root / 'EVALUATION_REPORT_ORCHESTRATION.md'
+    else:
+        use_case_template = use_case_path / 'EVALUATION_CODING_AGENT.md'
+        generic_template = repo_root / 'EVALUATION_REPORT_CODING_AGENT.md'
+    
+    # Choose template source
+    if use_case_template.exists():
+        template_source = use_case_template
+        print_info(f"Using use-case specific template")
+    elif generic_template.exists():
+        template_source = generic_template
+        print_info(f"Using generic template")
+    else:
+        print_error("No evaluation template found!")
+        return False
+    
+    try:
+        # Create .report/ folder
+        report_dir = target_path / '.report'
+        report_dir.mkdir(exist_ok=True)
+        
+        # Create screenshots subfolder
+        (report_dir / 'screenshots').mkdir(exist_ok=True)
+        
+        # Copy evaluation template to run folder
+        eval_dest = target_path / 'EVALUATION.md'
+        shutil.copy(template_source, eval_dest)
+        
+        # Create a README in .report explaining its purpose
+        report_readme = report_dir / 'README.md'
+        with open(report_readme, 'w') as f:
+            f.write("""# Evaluation Assets
+
+This folder contains all assets related to evaluating this agent run:
+
+- **screenshots/** - Screenshots of the application, errors, interesting moments
+- **chat-log.md** - Conversation history with the agent (optional)
+- **transcript.json** - Full session transcript (optional)
+- **session-notes.md** - Manual notes about the session (optional)
+
+All files in this folder are optional but helpful for comprehensive evaluation.
+""")
+        
+        print_success(f"Created .report/ folder with evaluation template")
+        return True
+    except Exception as e:
+        print_error(f"Error setting up evaluation: {e}")
+        return False
+
+
+def scaffold_index_entry(use_case_path, target_path, is_orchestration, agent_harness, model_name, paradigm_name=None):
+    """Add a scaffolded entry to the appropriate index file."""
+    try:
+        # Determine index file path
+        if is_orchestration:
+            index_file = use_case_path / 'INDEX_ORCHESTRATION.md'
+        else:
+            index_file = use_case_path / 'INDEX_CODING_AGENTS.md'
+        
+        if not index_file.exists():
+            print_info(f"Index file not found, skipping scaffolding")
+            return False
+        
+        # Read existing index
+        with open(index_file, 'r') as f:
+            content = f.read()
+        
+        # Build relative path from use case to target
+        try:
+            rel_path = target_path.relative_to(use_case_path)
+        except ValueError:
+            rel_path = target_path
+        
+        # Get current date
+        from datetime import datetime
+        today = datetime.now().strftime("%b %d, %Y")
+        
+        # Create scaffolded entry
+        if is_orchestration:
+            entry = f"""
+## {paradigm_name.upper()} - {agent_harness.title()} - {model_name.title()} - {today}
+
+![Main Screenshot]({rel_path}/screenshot.png)
+
+**Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
+**Time:** `[X hours]`  
+**Score:** `[X/30]` ([detailed report]({rel_path}/EVALUATION.md))
+
+**Quick Summary:**
+```
+[Fill in after run - 2-3 sentences about how orchestration worked]
+```
+
+**Workflow:**
+- [ ] Specification phase completed
+- [ ] Architecture phase completed
+- [ ] Implementation phase completed
+- [ ] Testing phase completed
+
+**Core Features:**
+- [ ] [Feature 1]
+- [ ] [Feature 2]
+- [ ] [Feature 3]
+- [ ] [Feature 4]
+
+**Rating:** ⭐⭐⭐⭐⭐ `X/5` - `[Recommendation]`
+
+---
+"""
+        else:
+            entry = f"""
+## {agent_harness.title()} - {model_name.title()} - {today}
+
+![Main Screenshot]({rel_path}/screenshot.png)
+
+**Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
+**Time:** `[X hours]`  
+**Score:** `[X/30]` ([detailed report]({rel_path}/EVALUATION.md))
+
+**Quick Summary:**
+```
+[Fill in after run - 2-3 sentences about what worked/didn't work]
+```
+
+**Core Features:**
+- [ ] [Feature 1]
+- [ ] [Feature 2]
+- [ ] [Feature 3]
+- [ ] [Feature 4]
+
+**Rating:** ⭐⭐⭐⭐⭐ `X/5` - `[Recommendation]`
+
+---
+"""
+        
+        # Find insertion point (before "## Summary Statistics")
+        summary_marker = "## Summary Statistics"
+        if summary_marker in content:
+            # Insert before summary
+            parts = content.split(summary_marker, 1)
+            new_content = parts[0] + entry + "\n" + summary_marker + parts[1]
+        else:
+            # Append to end
+            new_content = content + "\n" + entry
+        
+        # Write updated index
+        with open(index_file, 'w') as f:
+            f.write(new_content)
+        
+        print_success(f"Scaffolded entry in {index_file.name}")
+        return True
+    except Exception as e:
+        print_error(f"Error scaffolding index entry: {e}")
+        return False
+
+
 def main():
     """Main application flow."""
     print_header("Agent Comparison Setup Tool")
@@ -345,6 +509,19 @@ def main():
     # Update target_path to actual location used
     target_path = actual_target
     
+    # Setup evaluation template and .report/ folder
+    setup_evaluation_template(target_path, use_case['path'], is_orchestration)
+    
+    # Scaffold index entry
+    scaffold_index_entry(
+        use_case['path'], 
+        target_path, 
+        is_orchestration, 
+        agent_harness, 
+        model_name, 
+        paradigm_name
+    )
+    
     # Create git branch
     if create_git_branch:
         if not create_branch(branch_name):
@@ -357,9 +534,13 @@ def main():
     print()
     print(f"{Colors.CYAN}Next steps:{Colors.ENDC}")
     print(f"  1. cd {target_path.relative_to(get_repo_root())}")
-    print(f"  2. Read {Colors.BOLD}_base/prompt.md{Colors.ENDC} (or the copied {Colors.BOLD}prompt.md{Colors.ENDC})")
+    print(f"  2. Read {Colors.BOLD}prompt.md{Colors.ENDC}")
     print(f"  3. Start your agent with the prompt")
-    print(f"  4. Let it work and review the results!")
+    print(f"  4. After completion:")
+    print(f"     - Add screenshot as {Colors.BOLD}screenshot.png{Colors.ENDC}")
+    print(f"     - Fill out {Colors.BOLD}EVALUATION.md{Colors.ENDC}")
+    print(f"     - Update the index entry in {Colors.BOLD}{'INDEX_ORCHESTRATION.md' if is_orchestration else 'INDEX_CODING_AGENTS.md'}{Colors.ENDC}")
+    print(f"     - Optional: Add session logs to {Colors.BOLD}.report/{Colors.ENDC}")
     print()
     
     return 0
