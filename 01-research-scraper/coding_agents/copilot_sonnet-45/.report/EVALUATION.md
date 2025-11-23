@@ -39,7 +39,7 @@
 Rate each requirement: ✅ Works Well | ⚠️ Partially Works | ❌ Broken/Missing
 
 ### Paper Ingestion
-- [❌] **Manual ingestion**: Accepts arXiv links, fetches metadata and PDF content
+- [✅] **Manual ingestion**: Accepts arXiv links, fetches metadata and PDF content
 - [✅] **Embedding generation**: Creates and stores embeddings for papers
 - [✅] **Continuous import**: Can start multiple parallel import tasks
 - [❌] **Import configuration**: Configurable check interval (every N seconds)
@@ -49,22 +49,22 @@ Rate each requirement: ✅ Works Well | ⚠️ Partially Works | ❌ Broken/Miss
 - [✅] **Task management**: Can independently start/stop import tasks
 
 ### Four Views Implementation
-- [ ] **Paper List View**: Filterable/sortable table with all required columns
-  - [ ] Columns: Title, Authors, Date, arXiv Category, Status
-  - [ ] Quick actions: Star, Mark as read, Open detail
-  - [ ] Search bar with live filtering
-  - [ ] Pagination works correctly
+- [✅] **Paper List View**: Filterable/sortable table with all required columns
+  - [✅] Columns: Title, Authors, Date, arXiv Category, Status
+  - [✅] Quick actions: Star, Mark as read, Open detail
+  - [✅] Search bar with live filtering
+  - [✅] Pagination works correctly
   
-- [ ] **Paper Detail View**: Comprehensive paper analysis
-  - [ ] Full metadata displayed (title, authors, abstract, arXiv ID, date, categories)
-  - [ ] AI-generated summary (contributions, methodology, results, research possibilities)
-  - [ ] Full text extraction/display
-  - [ ] Similar papers section (vector similarity)
-  - [ ] Relationship graph (citations, topic overlap, author connections)
-  - [ ] Tags/keywords (auto-extracted and manual)
-  - [ ] Notes section (user annotations)
-  - [ ] Export options (BibTeX, PDF link, plain text summary)
-  - [ ] Navigation to related papers
+- [⚠️] **Paper Detail View**: Comprehensive paper analysis
+  - [✅] Full metadata displayed (title, authors, abstract, arXiv ID, date, categories)
+  - [✅] AI-generated summary (contributions, methodology, results, research possibilities)
+  - [✅] Full text extraction/display
+  - [✅] Similar papers section (vector similarity)
+  - [❌] Relationship graph (citations, topic overlap, author connections)
+  - [✅] Tags/keywords (auto-extracted and manual)
+  - [✅] Notes section (user annotations)
+  - [✅] Export options (BibTeX, PDF link, plain text summary)
+  - [✅] Navigation to related papers
   
 - [ ] **Theory Mode View**: Hypothesis testing interface
   - [ ] Input field for hypothesis/theory statement
