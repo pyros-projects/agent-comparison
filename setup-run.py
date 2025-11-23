@@ -282,8 +282,8 @@ def setup_evaluation_template(target_path, use_case_path, is_orchestration):
         # Create screenshots subfolder
         (report_dir / 'screenshots').mkdir(exist_ok=True)
         
-        # Copy evaluation template to run folder
-        eval_dest = target_path / 'EVALUATION.md'
+        # Copy evaluation template to .report/ folder
+        eval_dest = report_dir / 'EVALUATION.md'
         shutil.copy(template_source, eval_dest)
         
         # Create a README in .report explaining its purpose
@@ -293,12 +293,13 @@ def setup_evaluation_template(target_path, use_case_path, is_orchestration):
 
 This folder contains all assets related to evaluating this agent run:
 
+- **EVALUATION.md** - Structured evaluation checklist for this run
 - **screenshots/** - Screenshots of the application, errors, interesting moments
 - **chat-log.md** - Conversation history with the agent (optional)
 - **transcript.json** - Full session transcript (optional)
 - **session-notes.md** - Manual notes about the session (optional)
 
-All files in this folder are optional but helpful for comprehensive evaluation.
+Fill out EVALUATION.md after completing your run to document what worked and what didn't.
 """)
         
         print_success(f"Created .report/ folder with evaluation template")
@@ -340,11 +341,11 @@ def scaffold_index_entry(use_case_path, target_path, is_orchestration, agent_har
             entry = f"""
 ## {paradigm_name.upper()} - {agent_harness.title()} - {model_name.title()} - {today}
 
-![Main Screenshot]({rel_path}/screenshot.png)
+![Main Screenshot]({rel_path}/.report/screenshot.png)
 
 **Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
 **Time:** `[X hours]`  
-**Score:** `[X/30]` ([detailed report]({rel_path}/EVALUATION.md))
+**Score:** `[X/30]` ([detailed report]({rel_path}/.report/EVALUATION.md))
 
 **Quick Summary:**
 ```
@@ -371,11 +372,11 @@ def scaffold_index_entry(use_case_path, target_path, is_orchestration, agent_har
             entry = f"""
 ## {agent_harness.title()} - {model_name.title()} - {today}
 
-![Main Screenshot]({rel_path}/screenshot.png)
+![Main Screenshot]({rel_path}/.report/screenshot.png)
 
 **Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
 **Time:** `[X hours]`  
-**Score:** `[X/30]` ([detailed report]({rel_path}/EVALUATION.md))
+**Score:** `[X/30]` ([detailed report]({rel_path}/.report/EVALUATION.md))
 
 **Quick Summary:**
 ```
@@ -537,10 +538,10 @@ def main():
     print(f"  2. Read {Colors.BOLD}prompt.md{Colors.ENDC}")
     print(f"  3. Start your agent with the prompt")
     print(f"  4. After completion:")
-    print(f"     - Add screenshot as {Colors.BOLD}screenshot.png{Colors.ENDC}")
-    print(f"     - Fill out {Colors.BOLD}EVALUATION.md{Colors.ENDC}")
+    print(f"     - Add screenshot as {Colors.BOLD}.report/screenshot.png{Colors.ENDC}")
+    print(f"     - Fill out {Colors.BOLD}.report/EVALUATION.md{Colors.ENDC}")
     print(f"     - Update the index entry in {Colors.BOLD}{'INDEX_ORCHESTRATION.md' if is_orchestration else 'INDEX_CODING_AGENTS.md'}{Colors.ENDC}")
-    print(f"     - Optional: Add session logs to {Colors.BOLD}.report/{Colors.ENDC}")
+    print(f"     - Optional: Add session logs to {Colors.BOLD}.report/session-logs/{Colors.ENDC}")
     print()
     
     return 0

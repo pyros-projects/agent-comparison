@@ -6,11 +6,11 @@ Quick index of all orchestration paradigm runs for this use case.
 
 ## [Paradigm] - [Agent] - [Model] - [Date]
 
-![Main Screenshot](orchestration/[paradigm]/[folder-name]/screenshot.png)
+![Main Screenshot](orchestration/[paradigm]/[folder-name]/.report/screenshot.png)
 
 **Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
 **Time:** `[e.g., 8 hours]`  
-**Score:** `[X/30]` ([detailed report](orchestration/[paradigm]/[folder-name]/EVALUATION.md))
+**Score:** `[X/30]` ([detailed report](orchestration/[paradigm]/[folder-name]/.report/EVALUATION.md))
 
 **Quick Summary:**
 ```
