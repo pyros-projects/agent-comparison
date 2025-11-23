@@ -1,0 +1,14 @@
+[project]
+name = "codemorph"
+version = "0.1.0"
+description = "Automated code migration tool for Python 2 to Python 3"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+codemorph = "codemorph.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

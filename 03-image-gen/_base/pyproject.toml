@@ -1,0 +1,17 @@
+[project]
+name = "agent-comparison-03-orion"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "pyros-projects", email = "pyros.sd.models@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+agent-comparison-03-orion = "agent_comparison_03_orion:main"
+
+[build-system]
+requires = ["uv_build>=0.9.1,<0.10.0"]
+build-backend = "uv_build"

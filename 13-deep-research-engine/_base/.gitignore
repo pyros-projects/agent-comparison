@@ -1,0 +1,15 @@
+*.pyc
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.db
+*.db-journal
+.DS_Store
+.env
+output/
+reports/
+research_cache/
+workflow_logs/
+*.pdf
+*.docx

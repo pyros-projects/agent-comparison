@@ -1,0 +1,14 @@
+[project]
+name = "wikigit"
+version = "0.1.0"
+description = "Git-based wiki system with version control and branching"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+wikigit = "wikigit.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -1,0 +1,14 @@
+{
+  "name": "agent-comparison-14-amongweb",
+  "version": "0.1.0",
+  "description": "Web-based port of Among LLMs social deduction game",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
