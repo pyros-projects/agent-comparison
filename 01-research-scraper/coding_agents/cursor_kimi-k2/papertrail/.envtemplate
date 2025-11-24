@@ -1,0 +1,16 @@
+# LLM Configuration
+DEFAULT_MODEL=gpt-4o-mini
+DEFAULT_EMBEDDING_MODEL=text-embedding-3-small
+
+# OpenAI API Key (if using OpenAI models)
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Other LLM provider keys as needed
+# ANTHROPIC_API_KEY=your_anthropic_key_here
+# COHERE_API_KEY=your_cohere_key_here
+
+# Application settings
+BACKEND_HOST=0.0.0.0
+BACKEND_PORT=8000
+FRONTEND_PORT=3000
+LOG_LEVEL=INFO

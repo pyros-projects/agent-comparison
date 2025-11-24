@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaperTrail - Research Paper Catalog</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .header { color: #2563eb; margin-bottom: 30px; }
+        .section { margin: 20px 0; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; }
+        .api-test { background: #f3f4f6; padding: 15px; margin: 10px 0; border-radius: 4px; }
+        button { background: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+    <h1 class="header">PaperTrail - Research Paper Catalog</h1>
+    
+    <div class="section">
+        <h2>System Status</h2>
+        <div id="status">Loading...</div>
+    </div>
+    
+    <div class="section">
+        <h2>API Testing</h2>
+        <div class="api-test">
+            <button onclick="testHealth()">Test Health Endpoint</button>
+            <button onclick="testPapers()">Test Papers API</button>
+            <button onclick="testTheory()">Test Theory Mode</button>
+            <div id="api-results"></div>
+        </div>
+    </div>
+
+    <script>
+        async function testHealth() {
+            try {
+                const response = await fetch('http://localhost:8000/health');
+                const data = await response.json();
+                document.getElementById('status').innerHTML = 
+                    `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('status').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        async function testPapers() {
+            try {
+                const response = await fetch('http://localhost:8000/api/papers/');
+                const data = await response.json();
+                document.getElementById('api-results').innerHTML = 
+                    `<h3>Papers API Response:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('api-results').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        async function testTheory() {
+            try {
+                const response = await fetch('http://localhost:8000/api/theory/analyze?theory=attention+mechanisms+improve+performance');
+                const data = await response.json();
+                document.getElementById('api-results').innerHTML = 
+                    `<h3>Theory API Response:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('api-results').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        // Test health on load
+        testHealth();
+    </script>
+</body>
+</html>
