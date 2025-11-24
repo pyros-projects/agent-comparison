@@ -1,0 +1,20 @@
+[project]
+name = "papertrail"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "arxiv>=2.3.1",
+    "beautifulsoup4>=4.14.2",
+    "fastapi>=0.121.3",
+    "litellm>=1.80.5",
+    "networkx>=3.5",
+    "pydantic>=2.12.4",
+    "python-multipart>=0.0.20",
+    "requests>=2.32.5",
+    "sentence-transformers>=5.1.2",
+    "tinydb>=4.8.2",
+    "uvicorn>=0.38.0",
+    "websockets>=15.0.1",
+]

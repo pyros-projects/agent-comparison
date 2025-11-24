@@ -1,10 +1,22 @@
 # Evaluation Report - Research Paper Catalog (Coding Agent)
 
 **Use Case:** `01-research-scraper (PaperTrail)`  
-**Agent Harness:** `[e.g., codexcli, cursor, windsurf, aider, cline]`  
-**Model:** `[e.g., codex-max-high, claude-sonnet-4.5, gemini-2-flash]`  
-**Date:** `[YYYY-MM-DD]`  
-**Evaluator:** `[Your name]`
+**Agent Harness:** `cursor`  
+**Model:** `kimi k2`  
+**Date:** `2025-11-24`  
+**Evaluator:** `Pyro`
+
+If an agent starts scaffolding a project not into the current cwd but into its own root folder then trouble in form of completely losing the directory-plot follows.
+
+![](screenshots/paperpaperpapertrailtrailtrail.png)
+
+There is no coming back after creating five level deep of projects
+
+![](screenshots/modern_react_app.png)
+
+If you go down the rabbit hole that deep then this is a modern react application
+
+Kimi-K2 is a good example of "yeah it probably scores high on benchmarks" but is virtually unusable, except you are going to handhold every step and
 
 ---
 
@@ -12,11 +24,11 @@
 
 - [ ] **Completed Successfully** - Agent reached a working state
 - [ ] **Partially Complete** - Some features work, others missing/broken
-- [ ] **Failed** - Unable to produce working implementation
+- [x] **Failed** - Unable to produce working implementation
 
-**Total Time:** `[e.g., 6 hours]`  
+**Total Time:** `20min`  
 **Estimated Token Usage:** `[e.g., ~200k tokens]` _(if available)_  
-**Number of Iterations:** `[e.g., 25 back-and-forth exchanges]`
+**Number of Iterations:** `4x continue with task`
 
 ---
 
@@ -25,7 +37,7 @@
 ### Process Issues
 - [ ] **No intervention needed** - Agent completed autonomously
 - [ ] **Minor guidance** - Clarified requirements or made simple decisions
-- [ ] **Moderate intervention** - Fixed blocking issues or redirected approach
+- [x] **Moderate intervention** - Fixed blocking issues or redirected approach
 - [ ] **Heavy intervention** - Basically pair programming, agent needed constant help
 
 ### Specific Interventions (check all that apply)
@@ -33,7 +45,7 @@
 - [ ] Agent started long-running server in foreground, blocking terminal
 - [ ] Agent got stuck in error loop (repeating same failed approach)
 - [ ] Agent hallucinated APIs/libraries that don't exist
-- [ ] Agent needed help with file paths or project structure
+- [x] Agent needed help with file paths or project structure
 - [ ] Agent needed dependency installation help (uv commands)
 - [ ] Agent didn't use Playwright MCP for testing
 - [ ] Agent struggled with WebSocket implementation
