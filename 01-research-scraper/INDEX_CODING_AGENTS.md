@@ -50,6 +50,30 @@ Negatives:
 
 ---
 
+
+## Copilot - Gpt-51-Codex - Nov 24, 2025
+
+![Main Screenshot](coding_agents/copilot_gpt-51-codex/.report/screenshot.png)
+
+**Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
+**Time:** `[X hours]`  
+**Score:** `[X/30]` ([detailed report](coding_agents/copilot_gpt-51-codex/.report/EVALUATION.md))
+
+**Quick Summary:**
+```
+[Fill in after run - 2-3 sentences about what worked/didn't work]
+```
+
+**Core Features:**
+- [ ] [Feature 1]
+- [ ] [Feature 2]
+- [ ] [Feature 3]
+- [ ] [Feature 4]
+
+**Rating:** ⭐⭐⭐⭐⭐ `X/5` - `[Recommendation]`
+
+---
+
 ## Summary Statistics
 
 | Agent | Model | Time | Score | Status | Rating |

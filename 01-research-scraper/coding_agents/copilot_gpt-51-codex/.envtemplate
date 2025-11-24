@@ -1,0 +1,11 @@
+AZURE_API_KEY=xxx
+AZURE_API_BASE=https://xxx.cognitiveservices.azure.com/
+AZURE_API_VERSION="2025-04-01-preview"
+DEFAULT_MODEL="azure/gpt-4.1"
+DEFAULT_EMBEDDING_MODEL="azure/text-embedding-3-small"
+
+# or
+
+# OPENAI_API_KEY=xxx
+# DEFAULT_MODEL="openai/gpt-4.1"
+# DEFAULT_EMBEDDING_MODEL="openai/text-embedding-3-small"
