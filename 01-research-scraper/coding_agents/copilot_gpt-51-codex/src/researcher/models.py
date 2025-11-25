@@ -72,6 +72,7 @@ class ImportTaskConfig(BaseModel):
     total_imported: int = 0
     total_attempted: int = 0
     last_run_at: dt.datetime | None = None
+    next_run_at: dt.datetime | None = None
 
 
 class TheoryQueryRequest(BaseModel):
@@ -124,6 +125,9 @@ class DashboardStats(BaseModel):
     starred: int
     read: int
     categories: dict[str, int]
+    topic_clusters: dict[str, int]
+    graph_clusters: dict[str, int]
+    storage_bytes: int
     recent_activity: List[dict[str, Any]]
     tasks: List[ImportTaskConfig]
 

@@ -10,7 +10,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class AppSettings(BaseSettings):
     """Runtime configuration sourced from environment variables."""
 
-    model_config = SettingsConfigDict(env_file=('.env',), env_file_encoding='utf-8', case_sensitive=False)
+    model_config = SettingsConfigDict(
+        env_file=('.env',),
+        env_file_encoding='utf-8',
+        case_sensitive=False,
+        extra='allow',
+    )
 
     app_name: str = Field(default="PaperTrail")
     data_dir: Path = Field(default=Path("var/data"))

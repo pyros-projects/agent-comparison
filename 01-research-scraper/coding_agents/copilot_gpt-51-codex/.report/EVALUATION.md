@@ -1,10 +1,12 @@
 # Evaluation Report - Research Paper Catalog (Coding Agent)
 
 **Use Case:** `01-research-scraper (PaperTrail)`  
-**Agent Harness:** `[e.g., codexcli, cursor, windsurf, aider, cline]`  
-**Model:** `[e.g., codex-max-high, claude-sonnet-4.5, gemini-2-flash]`  
-**Date:** `[YYYY-MM-DD]`  
-**Evaluator:** `[Your name]`
+**Agent Harness:** `copilot`  
+**Model:** `gpt-5.1-codex (medium)`  
+**Date:** `[2025-11-25]`  
+**Evaluator:** `Pyro`
+
+![](screenshot.png)
 
 ---
 
@@ -12,11 +14,11 @@
 
 - [ ] **Completed Successfully** - Agent reached a working state
 - [ ] **Partially Complete** - Some features work, others missing/broken
-- [ ] **Failed** - Unable to produce working implementation
+- [X] **Failed** - Unable to produce working implementation
 
-**Total Time:** `[e.g., 6 hours]`  
+**Total Time:** `30min`  
 **Estimated Token Usage:** `[e.g., ~200k tokens]` _(if available)_  
-**Number of Iterations:** `[e.g., 25 back-and-forth exchanges]`
+**Number of Iterations:** `5`
 
 ---
 
@@ -25,7 +27,7 @@
 ### Process Issues
 - [ ] **No intervention needed** - Agent completed autonomously
 - [ ] **Minor guidance** - Clarified requirements or made simple decisions
-- [ ] **Moderate intervention** - Fixed blocking issues or redirected approach
+- [x] **Moderate intervention** - Fixed blocking issues or redirected approach
 - [ ] **Heavy intervention** - Basically pair programming, agent needed constant help
 
 ### Specific Interventions (check all that apply)
@@ -35,7 +37,7 @@
 - [ ] Agent hallucinated APIs/libraries that don't exist
 - [ ] Agent needed help with file paths or project structure
 - [ ] Agent needed dependency installation help (uv commands)
-- [ ] Agent didn't use Playwright MCP for testing
+- [x] Agent didn't use Playwright MCP for testing
 - [ ] Agent struggled with WebSocket implementation
 - [ ] Agent had issues with embedding generation/storage
 - [ ] Agent needed debugging assistance
@@ -44,7 +46,9 @@
 
 **Details:**
 ```
-[Describe what interventions were needed and why]
+No working implementation after initial run.
+In "intervention" mode we fixed the issues and got it working which lead to an app with basically all features missing or not working
+During continued intervention-programming copilot crashed and doesn't recover anymore. Perhaps a restart would help but I reached the point in which I don't fucking care anymore.
 ```
 
 ---
@@ -54,14 +58,14 @@
 Rate each requirement: ✅ Works Well | ⚠️ Partially Works | ❌ Broken/Missing
 
 ### Paper Ingestion
-- [ ] **Manual ingestion**: Accepts arXiv links, fetches metadata and PDF content
-- [ ] **Embedding generation**: Creates and stores embeddings for papers
-- [ ] **Continuous import**: Can start multiple parallel import tasks
-- [ ] **Import configuration**: Configurable check interval (every N seconds)
-- [ ] **Import filters**: Category, semantic abstract matching, text search
-- [ ] **Newest first**: Properly sorts and prioritizes new papers
-- [ ] **Duplicate detection**: Skips already-known papers
-- [ ] **Task management**: Can independently start/stop import tasks
+- [⚠️] **Manual ingestion**: Accepts arXiv links, fetches metadata and PDF content
+- [⚠️] **Embedding generation**: Creates and stores embeddings for papers
+- [⚠️] **Continuous import**: Can start multiple parallel import tasks
+- [⚠️] **Import configuration**: Configurable check interval (every N seconds)
+- [⚠️] **Import filters**: Category, semantic abstract matching, text search
+- [⚠️] **Newest first**: Properly sorts and prioritizes new papers
+- [❌] **Duplicate detection**: Skips already-known papers
+- [⚠️] **Task management**: Can independently start/stop import tasks
 
 ### Four Views Implementation
 - [ ] **Paper List View**: Filterable/sortable table with all required columns

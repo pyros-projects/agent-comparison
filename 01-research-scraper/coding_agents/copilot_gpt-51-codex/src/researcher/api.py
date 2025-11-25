@@ -6,7 +6,6 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
 from .config import settings
 from .embeddings import EmbeddingService
@@ -122,13 +121,13 @@ def create_app() -> FastAPI:
 
     @app.get("/papers", response_model=dict)
     async def list_papers(
+        ctx: Annotated[AppContainer, Depends(get_container)],
         text: str | None = None,
         category: str | None = None,
         status: PaperStatus | None = None,
         starred: bool | None = None,
         limit: int = 50,
         offset: int = 0,
-        ctx: Annotated[AppContainer, Depends(get_container)] = Depends(get_container),
     ) -> dict:
         params = SearchQuery(text=text, category=category, status=status, starred=starred, limit=limit, offset=offset)
         items, total = ctx.storage.search(params)
@@ -144,9 +143,9 @@ def create_app() -> FastAPI:
     @app.patch("/papers/{paper_id}", response_model=Paper)
     async def update_paper(
         paper_id: str,
+        ctx: Annotated[AppContainer, Depends(get_container)],
         status: PaperStatus | None = None,
         starred: bool | None = None,
-        ctx: Annotated[AppContainer, Depends(get_container)] = Depends(get_container),
     ) -> Paper:
         try:
             return ctx.storage.update_paper_status(paper_id, status=status, starred=starred)
@@ -157,7 +156,7 @@ def create_app() -> FastAPI:
     async def add_note(
         paper_id: str,
         note: dict,
-        ctx: Annotated[AppContainer, Depends(get_container)] = Depends(get_container),
+        ctx: Annotated[AppContainer, Depends(get_container)],
     ) -> Paper:
         text = note.get("text")
         if not text:
@@ -185,7 +184,7 @@ def create_app() -> FastAPI:
     @app.post("/tasks", response_model=ImportTaskConfig)
     async def start_task(
         config: ImportTaskConfig,
-        ctx: Annotated[AppContainer, Depends(get_container)] = Depends(get_container),
+        ctx: Annotated[AppContainer, Depends(get_container)],
     ) -> ImportTaskConfig:
         await ctx.tasks.start_task(config)
         return config
@@ -202,6 +201,8 @@ def create_app() -> FastAPI:
     @app.get("/dashboard", response_model=DashboardStats)
     async def dashboard(ctx: Annotated[AppContainer, Depends(get_container)]) -> DashboardStats:
         data = ctx.storage.build_dashboard()
+        graph_clusters = ctx.graph.cluster_summary()
+        data["graph_clusters"] = graph_clusters
         return DashboardStats(**data)
 
     @app.post("/theory", response_model=TheoryResponse)

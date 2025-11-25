@@ -58,9 +58,14 @@ class GraphService:
             self.rebuild()
         if paper_id not in self.graph:
             self.rebuild()
+        focus_nodes = {paper_id}
+        for neighbor in list(self.graph.neighbors(paper_id))[:limit]:
+            focus_nodes.add(neighbor)
+            for secondary in list(self.graph.neighbors(neighbor))[: limit // 2 or 1]:
+                focus_nodes.add(secondary)
         nodes: List[GraphNode] = []
         edges: List[GraphEdge] = []
-        for node_id in self.graph.nodes:
+        for node_id in focus_nodes:
             data = self.graph.nodes[node_id]
             nodes.append(
                 GraphNode(
@@ -69,16 +74,27 @@ class GraphService:
                     category=data.get("category", "unknown"),
                 )
             )
-        for source, target, data in list(self.graph.edges(data=True))[:limit]:
-            edges.append(
-                GraphEdge(
-                    source=source,
-                    target=target,
-                    reason=data.get("reason", ""),
-                    weight=float(data.get("weight", 0.0)),
+        for source, target, data in self.graph.edges(data=True):
+            if source in focus_nodes and target in focus_nodes:
+                edges.append(
+                    GraphEdge(
+                        source=source,
+                        target=target,
+                        reason=data.get("reason", ""),
+                        weight=float(data.get("weight", 0.0)),
+                    )
                 )
-            )
         return GraphResponse(nodes=nodes, edges=edges)
+
+    def cluster_summary(self) -> dict[str, int]:
+        if not self.graph:
+            self.rebuild()
+        clusters: dict[str, int] = {}
+        if self.graph.number_of_nodes() == 0:
+            return clusters
+        for idx, component in enumerate(nx.connected_components(self.graph), start=1):
+            clusters[f"Cluster {idx}"] = len(component)
+        return clusters
 
     def similar_papers(self, paper: Paper, top_k: int = 5) -> list[tuple[Paper, float]]:
         others = [p for p in self.storage.list_papers() if p.id != paper.id and p.vector]

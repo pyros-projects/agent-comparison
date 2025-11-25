@@ -13,6 +13,7 @@ class Storage:
     """TinyDB-backed persistence helper."""
 
     def __init__(self, db_path: Path) -> None:
+        self.db_path = db_path
         self.db = TinyDB(db_path, ensure_ascii=True)
         self.papers = self.db.table("papers")
         self.tasks = self.db.table("tasks")
@@ -111,21 +112,33 @@ class Storage:
     def build_dashboard(self) -> dict:
         rows = list(self.list_papers())
         categories: dict[str, int] = {}
+        topic_clusters: dict[str, int] = {}
         starred = 0
         read = 0
         for paper in rows:
             for cat in paper.categories:
                 categories[cat] = categories.get(cat, 0) + 1
+            for keyword in paper.keywords or paper.tags:
+                if not keyword:
+                    continue
+                key = keyword.lower()
+                topic_clusters[key] = topic_clusters.get(key, 0) + 1
             if paper.starred:
                 starred += 1
             if paper.status == PaperStatus.READ:
                 read += 1
         activity = self.activity.all()[-50:]
+        storage_bytes = self.db_path.stat().st_size if self.db_path.exists() else 0
+        # keep top topics only for visualization clarity
+        sorted_topics = dict(sorted(topic_clusters.items(), key=lambda item: item[1], reverse=True)[:10])
         return {
             "total_papers": len(rows),
             "starred": starred,
             "read": read,
             "categories": categories,
+            "topic_clusters": sorted_topics,
+            "graph_clusters": {},
+            "storage_bytes": storage_bytes,
             "recent_activity": activity,
             "tasks": self.list_tasks(),
         }

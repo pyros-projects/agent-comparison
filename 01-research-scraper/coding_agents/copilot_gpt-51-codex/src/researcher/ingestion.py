@@ -24,6 +24,14 @@ logger = logging.getLogger(__name__)
 ARXIV_PATTERN = re.compile(r"arxiv\.org/(abs|pdf)/(?P<id>[\w\.\-]+)")
 
 
+def normalize_arxiv_id(url: str) -> str:
+    """Extract the canonical arXiv identifier from any supported link."""
+    match = ARXIV_PATTERN.search(url)
+    if match:
+        return match.group("id")
+    return url.split("/")[-1]
+
+
 class IngestionService:
     def __init__(
         self,
@@ -40,10 +48,16 @@ class IngestionService:
         self.bus = bus
 
     async def ingest_manual(self, payload: ManualIngestRequest) -> Paper:
-        arxiv_id = self._parse_arxiv_id(payload.arxiv_url)
+        arxiv_id = normalize_arxiv_id(payload.arxiv_url)
         existing = self.storage.get_paper_by_arxiv(arxiv_id)
         if existing:
             logger.info("Paper already ingested", extra={"arxiv_id": arxiv_id})
+            await self.bus.publish(
+                EventMessage(
+                    type=EventType.STATUS,
+                    payload={"arxiv_id": arxiv_id, "status": "duplicate"},
+                )
+            )
             return existing
         metadata = await self._fetch_metadata(arxiv_id)
         pdf_text = await self._download_pdf(metadata["pdf_url"])
@@ -124,13 +138,6 @@ class IngestionService:
             pages.append(snippet)
         return "\n".join(pages)
 
-    def _parse_arxiv_id(self, url: str) -> str:
-        match = ARXIV_PATTERN.search(url)
-        if match:
-            return match.group("id")
-        return url.split("/")[-1]
-
-
 class ContinuousImportManager:
     def __init__(
         self,
@@ -148,6 +155,8 @@ class ContinuousImportManager:
         return task_id in self._tasks and not self._tasks[task_id].done()
 
     async def start_task(self, config: ImportTaskConfig) -> ImportTaskConfig:
+        now = dt.datetime.now(dt.timezone.utc)
+        config.next_run_at = now
         self.storage.upsert_task(config)
         async with self._lock:
             task = asyncio.create_task(self._runner(config))
@@ -155,8 +164,13 @@ class ContinuousImportManager:
         await self.bus.publish(
             EventMessage(
                 type=EventType.TASK_UPDATED,
-                payload={"task_id": config.id, "status": config.status.value},
+                payload={
+                    "task_id": config.id,
+                    "status": config.status.value,
+                    "next_run_at": config.next_run_at.isoformat() if config.next_run_at else None,
+                },
             )
+        )
         return config
 
     async def stop_task(self, task_id: str) -> None:
@@ -168,11 +182,12 @@ class ContinuousImportManager:
         existing = self.storage.get_task(task_id)
         if existing:
             existing.status = ImportTaskStatus.STOPPED
+            existing.next_run_at = None
             self.storage.upsert_task(existing)
         await self.bus.publish(
             EventMessage(
                 type=EventType.TASK_UPDATED,
-                payload={"task_id": task_id, "status": "stopped"},
+                payload={"task_id": task_id, "status": "stopped", "next_run_at": None},
             )
         )
 
@@ -191,17 +206,34 @@ class ContinuousImportManager:
     async def _poll_once(self, config: ImportTaskConfig) -> None:
         papers = await self._query_arxiv(config)
         imported = 0
+        skipped = 0
         for entry in papers:
             try:
+                arxiv_id = entry.get("arxiv_id") or normalize_arxiv_id(entry["id"])
+                if self.storage.get_paper_by_arxiv(arxiv_id):
+                    skipped += 1
+                    await self.bus.publish(
+                        EventMessage(
+                            type=EventType.STATUS,
+                            payload={
+                                "task_id": config.id,
+                                "arxiv_id": arxiv_id,
+                                "status": "skipped",
+                            },
+                        )
+                    )
+                    continue
                 await self.ingestion.ingest_manual(
                     ManualIngestRequest(arxiv_url=entry["id"])  # type: ignore[arg-type]
                 )
                 imported += 1
             except Exception as exc:  # noqa: BLE001
                 logger.warning("Import task failed for paper", extra={"paper": entry.get("id")}, exc_info=exc)
+        now = dt.datetime.now(dt.timezone.utc)
         config.total_imported += imported
         config.total_attempted += len(papers)
-        config.last_run_at = dt.datetime.now(dt.timezone.utc)
+        config.last_run_at = now
+        config.next_run_at = now + dt.timedelta(seconds=config.interval_seconds)
         self.storage.upsert_task(config)
         await self.bus.publish(
             EventMessage(
@@ -210,6 +242,18 @@ class ContinuousImportManager:
                     "task_id": config.id,
                     "status": config.status.value,
                     "imported": imported,
+                    "skipped": skipped,
+                    "next_run_at": config.next_run_at.isoformat() if config.next_run_at else None,
+                },
+            )
+        )
+        await self.bus.publish(
+            EventMessage(
+                type=EventType.STATUS,
+                payload={
+                    "task_id": config.id,
+                    "message": "Next import scheduled",
+                    "next_run_at": config.next_run_at.isoformat() if config.next_run_at else None,
                 },
             )
         )
@@ -228,8 +272,8 @@ class ContinuousImportManager:
         entries: List[Dict[str, Any]] = []
         ns = "{http://www.w3.org/2005/Atom}"
         for entry in root.findall(f"{ns}entry"):
-            arxiv_id = entry.find(f"{ns}id").text or ""
-            entries.append({"id": arxiv_id})
+            raw_id = entry.find(f"{ns}id").text or ""
+            entries.append({"id": raw_id, "arxiv_id": normalize_arxiv_id(raw_id)})
         return entries
 
     def _build_query(self, config: ImportTaskConfig) -> str:

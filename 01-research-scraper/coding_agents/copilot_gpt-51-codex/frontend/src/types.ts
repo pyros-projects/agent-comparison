@@ -38,6 +38,7 @@ export interface ImportTask {
   total_imported: number;
   total_attempted: number;
   last_run_at?: string;
+  next_run_at?: string;
 }
 
 export interface DashboardStats {
@@ -45,6 +46,9 @@ export interface DashboardStats {
   starred: number;
   read: number;
   categories: Record<string, number>;
+  topic_clusters: Record<string, number>;
+  graph_clusters: Record<string, number>;
+  storage_bytes: number;
   recent_activity: Array<{ ts: string; title: string; paper_id: string; type: string }>;
   tasks: ImportTask[];
 }
