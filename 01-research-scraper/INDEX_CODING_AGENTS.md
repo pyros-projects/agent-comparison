@@ -10,12 +10,11 @@ Quick index of all one-shot coding agent runs for this use case.
 
 **Status:** ✅ Success
 **Time:** `8 minutes`  
-**Score:** `[X/30]` ([detailed report](coding_agents/copilot_sonnet-45/.report/EVALUATION.md))
 
 **Quick Summary:**
 ```
-One shot probably can't get better than this.
-No human interaction for a working MVP needed.
+One-shot probably can't get better than this.
+No human interaction needed for a working MVP.
 
 Negatives:
 - Implemented GraphRAG but didn't expose cluster visualization etc in the UI
@@ -31,22 +30,16 @@ Negatives:
 
 ![Main Screenshot](coding_agents/cursor_kimi-k2/.report/screenshot.png)
 
-**Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
-**Time:** `[X hours]`  
-**Score:** `[X/30]` ([detailed report](coding_agents/cursor_kimi-k2/.report/EVALUATION.md))
+**Status:**  ❌ Failed  
+**Time:** `1x`  
 
 **Quick Summary:**
 ```
-[Fill in after run - 2-3 sentences about what worked/didn't work]
+If an agent starts scaffolding a project not into the current cwd but into its own root folder then trouble in form of completely losing the directory-plot follows.
 ```
 
-**Core Features:**
-- [ ] [Feature 1]
-- [ ] [Feature 2]
-- [ ] [Feature 3]
-- [ ] [Feature 4]
 
-**Rating:** ⭐⭐⭐⭐⭐ `X/5` - `[Recommendation]`
+**Rating:** ⭐ `1/5` - `it failed. hard.`
 
 ---
 
@@ -55,36 +48,18 @@ Negatives:
 
 ![Main Screenshot](coding_agents/copilot_gpt-51-codex/.report/screenshot.png)
 
-**Status:** ✅ Success | ⚠️ Partial | ❌ Failed  
-**Time:** `[X hours]`  
-**Score:** `[X/30]` ([detailed report](coding_agents/copilot_gpt-51-codex/.report/EVALUATION.md))
+**Status:**  ❌ Failed  
+**Time:** `30m`  
+
 
 **Quick Summary:**
 ```
-[Fill in after run - 2-3 sentences about what worked/didn't work]
+Copilot crashed irrecoverable
 ```
 
-**Core Features:**
-- [ ] [Feature 1]
-- [ ] [Feature 2]
-- [ ] [Feature 3]
-- [ ] [Feature 4]
+**Rating:** ⭐ `1/5` - `[Recommendation]`
 
-**Rating:** ⭐⭐⭐⭐⭐ `X/5` - `[Recommendation]`
 
----
-
-## Summary Statistics
-
-| Agent | Model | Time | Score | Status | Rating |
-|-------|-------|------|-------|--------|--------|
-| [Name] | [Model] | Xh | X/30 | ✅/⚠️/❌ | ⭐ X/5 |
-
-**Average Time:** `[X hours]`  
-**Average Score:** `[X/30]`  
-**Success Rate:** `[X/Y runs completed]`
-
----
 
 ## Notes
 
